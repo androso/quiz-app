@@ -1,5 +1,5 @@
 import CustomizeMenu from "../views/Customize-menu.js";
-
+import { renderQuiz }from "./quiz.js";
 const $appContainer = document.querySelector(".app");
 let $questionsNumberInput;
 let $submitFormButton;
@@ -30,7 +30,7 @@ const renderHTML = async () => {
 }; 
 const cacheTheDom = () => {
     $questionsNumberInput = document.querySelector(".number-input");
-    $submitFormButton = document.querySelector(".quiz__form a");
+    $submitFormButton = document.querySelector(".quiz__form button");
     $numberInputError = document.querySelector(".submit-error");
     $selectCategory = document.querySelector(".category-select");
     $selectDifficulty = document.querySelector(".difficulty-select");
@@ -45,9 +45,7 @@ const getOnlyNumbers = (event) => {
 		event.preventDefault();
 	}
 	if (event.code === "Enter") {
-		console.log(event.code);
 		getUserData(event);
-
 	}
 };
 const getUserData = (event) => {
@@ -58,12 +56,10 @@ const getUserData = (event) => {
     const categoryId = !category ? "" : categories[category];
     //if the difficulty the user selected is random, we're gonna send an empty string to the api instead of an id
     const difficulty = $selectDifficulty.options[$selectDifficulty.selectedIndex].value.toLowerCase();
-
-    console.log(numberOfQuestions, categoryId, difficulty);
+    renderQuiz(numberOfQuestions, categoryId, difficulty);
 };
 const invalidNumber = (event) => {
 	event.preventDefault();
-    navigateTo($submitFormButton.href);
 	const numberOfQuestions = Number($questionsNumberInput.value);
 
 	if (numberOfQuestions === 0 || numberOfQuestions > 20) {
@@ -74,8 +70,3 @@ const invalidNumber = (event) => {
         return false;
 	}
 };
-
-const navigateTo = (url) => {
-    history.pushState(null, null, url);
-    
-}

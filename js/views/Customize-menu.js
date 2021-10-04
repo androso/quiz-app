@@ -1,4 +1,4 @@
-import ViewConstructor from "./ViewConstructor.js";
+import ViewConstructor from "../utils/ViewConstructor.js";
 
 export default class extends ViewConstructor {
     constructor () {
