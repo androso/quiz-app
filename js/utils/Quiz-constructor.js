@@ -1,4 +1,4 @@
-export default class {
+export default class Quiz {
     constructor (questions) {
         this.questions = questions;
         this.score = 0;
@@ -6,6 +6,9 @@ export default class {
     }
     getCurrentQuestion () {
         return this.questions[this.currentIndex];
+    }
+    getCurrentIndex () {
+        return this.currentIndex + 1;
     }
     nextQuestion () {
         this.currentIndex ++;

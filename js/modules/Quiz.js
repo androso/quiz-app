@@ -1,29 +1,32 @@
-import QuestionsConstructor from "../utils/Questions-constructor.js";
+import Quiz from "../utils/Quiz-constructor.js";
 import QuizConstructor from "../utils/Quiz-constructor.js";
 import GameScreen from "../views/Game-screen.js";
+import { renderCustomizeMenu } from "./customize.js";
 
 const $appContainer = document.querySelector(".app");
-let $quizQuestion;
-let $tracker;
-let $tagline;
-let $choices;
-let $innerProgress;
-let $nextButton;
-let $restartButton;
 
 export const renderQuiz = (numberOfQuestions, categoryId, difficulty) => {
-	console.log(numberOfQuestions, categoryId, difficulty);
-	// //Load the html
-	//Create questions with the data from the api
-	//Create quiz with those questions
-	//Replace html elements with those questions
 	getQuestionsData(numberOfQuestions, categoryId, difficulty);
-	loadHTML();
-	cacheTheDom();
 };
+
+const loadHTML = () => {
+	const gameView = new GameScreen();
+	$appContainer.innerHTML = gameView.getHTML();
+};
+
+const addListeners = () => {
+	const $nextButton = document.querySelector(".button.next");
+	const $restartButton = document.querySelector(".button.restart");
+	// $nextButton.addEventListener("click", checkAnswer);
+	$restartButton.addEventListener("click", renderCustomizeMenu); 
+}
+
 const getQuestionsData = async (numberOfQuestions, categoryId, difficulty) => {
+	const $spinnerContainer = document.querySelector(".spinner-container");
 	const reqLink = `https://opentdb.com/api.php?amount=${numberOfQuestions}&category=${categoryId}&difficulty=${difficulty}&type=multiple`;
+	$spinnerContainer.classList.toggle("spinner-container--active");
 	const questionsData = await (await fetch(reqLink)).json();
+	$spinnerContainer.classList.toggle("spinner-container--active");
 	const questions = questionsData.results.map((questionObject) => {
 		const question = questionObject.question;
 		const wrongChoices = questionObject.incorrect_answers;
@@ -34,21 +37,31 @@ const getQuestionsData = async (numberOfQuestions, categoryId, difficulty) => {
 			correctAnswer: correctChoice,
 		};
 	});
-    console.log(questions);
+	const quiz = new QuizConstructor(questions);
+	renderNewQuestion(quiz);
 };
 
-const loadHTML = () => {
-	const gameView = new GameScreen();
-	$appContainer.innerHTML = gameView.getHTML();
-};
-const cacheTheDom = () => {
-	$quizQuestion = document.querySelector(".quiz__question");
-	$tracker = document.querySelector(".quiz__current-question");
-	$tagline = document.querySelector(".quiz__tagline");
-	$choices = Array.from(document.querySelectorAll(".quiz__label"));
-	$innerProgress = document.querySelector(".quiz__progress-bar__inner");
-	$nextButton = document.querySelector(".button.next");
-	$restartButton = document.querySelector(".button.restart");
-};
+const renderNewQuestion = (quiz) => {
+	loadHTML();
+	addListeners();
+	const $quizQuestion = document.querySelector(".quiz__question");
+	const $tracker = document.querySelector(".quiz__current-question");
+	const $tagline = document.querySelector(".quiz__tagline");
+	let $choices = Array.from(document.querySelectorAll(".quiz__label"));
+	const $innerProgress = document.querySelector(".quiz__progress-bar__inner");
+	const $checkedInput = document.querySelector(".quiz__input:checked");
+	const currentQuestion = quiz.getCurrentQuestion();
+	const currentQuestionIndex = quiz.getCurrentIndex();
 
-const createQuiz = (numberOfQuestions, categoryId, difficulty) => {};
+
+	
+	if ($checkedInput) $checkedInput.checked = false;
+	$quizQuestion.innerHTML = currentQuestion.question;
+	$tracker.innerText = `${currentQuestionIndex} of ${quiz.questions.length}`;
+	$choices.map(($choice, index) => {
+		$choice.innerHTML = `<i></i>${currentQuestion.choices[index]}`;
+	});
+
+}
+
+

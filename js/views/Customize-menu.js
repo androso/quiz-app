@@ -13,6 +13,14 @@ export default class extends ViewConstructor {
 							<span class="customize">Customize</span>
 						</div>
 						<form class="quiz__form">
+							<div class="spinner-container">
+								<div class="lds-ellipsis">
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+								</div>
+							</div>	
 							<div class="form__input questions-number__container">
 								<label for="questions-number">Number of Questions:</label>
 								<br />
