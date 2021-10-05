@@ -17,8 +17,20 @@ const loadHTML = () => {
 const addListeners = () => {
 	const $nextButton = document.querySelector(".button.next");
 	const $restartButton = document.querySelector(".button.restart");
-	// $nextButton.addEventListener("click", checkAnswer);
+	$nextButton.addEventListener("click", checkAnswer);
 	$restartButton.addEventListener("click", renderCustomizeMenu); 
+}
+const checkAnswer = () => {
+	const $checkedLabel = document.querySelector(".quiz__input:checked + label");
+	const $alertModal = document.getElementsByClassName("modal")[0];
+	
+	if (!$checkedLabel) {
+		$alertModal.classList.toggle("show");
+		return false;
+	}
+	const answer = $checkedLabel.innerText;
+
+	console.log(answer);
 }
 
 const getQuestionsData = async (numberOfQuestions, categoryId, difficulty) => {
@@ -53,7 +65,9 @@ const renderNewQuestion = (quiz) => {
 	const currentQuestion = quiz.getCurrentQuestion();
 	const currentQuestionIndex = quiz.getCurrentIndex();
 
-
+	if (quiz.currentIndex === quiz.questions.length) {
+		
+	}
 	
 	if ($checkedInput) $checkedInput.checked = false;
 	$quizQuestion.innerHTML = currentQuestion.question;

@@ -68,6 +68,19 @@ export default class extends ViewConstructor {
                 <button class="button button--bordered restart">Restart</button>
             </div>
         </main>
+        <div class="modal">
+			<div class="modal__content">
+				<div class="modal__header">
+					<button class="modal__close-icon">
+						<i class="fas fa-times"></i>
+					</button>
+				</div>
+				<div class="modal__body">
+					<h3 class="modal__message">You must pick an answer first</h3>
+					<button class="modal__button">Close</button>
+				</div>
+			</div>
+		</div>
         `
     }
 }
