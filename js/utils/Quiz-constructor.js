@@ -14,7 +14,7 @@ export default class Quiz {
         this.currentIndex ++;
     }
     hasEnded () {
-        return this.currentIndex ==- this.questions.length;
+        return this.currentIndex === this.questions.length;
     }
     guess (userGuess) {
         const currentQuestion = this.getCurrentQuestion();
