@@ -211,10 +211,15 @@ body {
 	height: 100%;
     background-color: #55583275;
 	padding-top: 0px;
-	display: none;
+	visibility: hidden;
+	opacity: 0;
+	pointer-events: none;
+	transition: 0.3s;
 }
-.modal.show {
-	display: block;
+.show {
+	visibility: visible;
+	opacity: 1;
+	pointer-events: auto;
 }
 .modal__content {
 	background: #444441;
@@ -227,19 +232,16 @@ body {
 	text-align: center;
 	position: relative;
 	margin: 35vh auto;
-	animation: 0.3s slideDown;
-    font-family: var(--main-font-stack);
+	font-family: var(--main-font-stack);
+	visibility: hidden;
+	opacity: 0;
+	transition: 0.3s ease-out;
+	transform: translateY(-50px);
 }
-
-@keyframes slideDown {
-	from {
-		top: -25px;
-		opacity: 0;
-	}
-	to {
-		top: 0;
-		opacity: 1;
-	}
+.show > .modal__content {
+	visibility: visible;
+	opacity: 1;
+	transform: translateY(0);
 }
 .modal__close-icon {
 	font-size: 1.5rem;
@@ -251,7 +253,9 @@ body {
 	color: #fbffd0;
 	cursor: pointer;
 }
-.modal__close-icon:hover {
+.modal__close-icon:hover, 
+.modal__close-icon:active 
+.modal__close-icon:focus {
 	color: #f7ff94;
 }
 
