@@ -1,7 +1,7 @@
 import QuizConstructor from "../utils/Quiz-constructor.js";
 import Question from "../utils/Questions-constructor.js";
 import GameScreen from "../views/Game-screen.js";
-import { renderCustomizeMenu } from "./customize.js";
+import { renderCustomizeMenu } from "./Customize.js";
 
 const $appContainer = document.querySelector(".app");
 let quiz;
@@ -12,6 +12,7 @@ export const renderQuiz = (numberOfQuestions, categoryId, difficulty) => {
 };
 
 const loadHTML = () => {
+  window.scrollTo(0, 0);
 	const gameView = new GameScreen();
 	$appContainer.innerHTML = gameView.getHTML();
 };
@@ -25,7 +26,11 @@ const addListeners = () => {
 		closeModal(event, $modalContainer);
 	});
 	$nextButton.addEventListener("click", checkAnswer);
-	$restartButton.addEventListener("click", renderCustomizeMenu);
+	$restartButton.addEventListener("click", () => {
+    progressBarWidth = 0;
+    renderCustomizeMenu();
+    
+  });
 };
 const closeModal = (event, $modalContainer) => {
 	if (
@@ -83,6 +88,7 @@ const shuffle = (array) => {
 	return array;
 }
 const renderNewQuestion = (quiz) => {
+  window.scrollTo(0, 0);
 	const $quizQuestion = document.querySelector(".quiz__question");
 	const $tracker = document.querySelector(".quiz__current-question");
 	const $tagline = document.querySelector(".quiz__tagline");
@@ -117,5 +123,6 @@ const incrementProgressBar = () => {
 	const $innerProgressBar = document.querySelector(".quiz__progress-bar__inner");
 	const increaseBarWidth = 100 / quiz.questions.length;
 	progressBarWidth+= increaseBarWidth;
+  console.log(increaseBarWidth, progressBarWidth)
 	$innerProgressBar.style.width = `${progressBarWidth}%`;
 }
